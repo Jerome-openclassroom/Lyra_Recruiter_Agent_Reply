@@ -57,6 +57,12 @@ Lyra_Recruiter_Agent/
 
 ---
 
+---
+
+## 📜 License
+
+This project is licensed under the [MIT License](./LICENSE).
+
 ## ✨ Author
 
 This project was created and implemented by **Jérôme FRASSON**, as part of his personal formation in applied AI and intelligent workflow automation.
