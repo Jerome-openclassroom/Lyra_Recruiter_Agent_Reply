@@ -1,0 +1,172 @@
+{
+  "name": "workflow révision 2",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "923bac7b-7a72-4c28-92ad-f5f5628ca216",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1Y-CtmvpahbuhZW9-_mxoeM7V1iSa4r4Dytqv57wQX78",
+          "mode": "list",
+          "cachedResultName": "message entrant",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Y-CtmvpahbuhZW9-_mxoeM7V1iSa4r4Dytqv57wQX78/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Feuille 1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Y-CtmvpahbuhZW9-_mxoeM7V1iSa4r4Dytqv57wQX78/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        208,
+        0
+      ],
+      "id": "39f7eb76-62ea-4fde-af18-383ae88404db",
+      "name": "récupère message entrant dans un Sheet ",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "vGp9szxQUXvYy8ix",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "assistant",
+        "assistantId": {
+          "__rl": true,
+          "value": "asst_0jnNRiJzmqgjrHM0XSFmcLxK",
+          "mode": "list",
+          "cachedResultName": "Lyra_candidatures"
+        },
+        "prompt": "define",
+        "text": "={{ $json.Message }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        416,
+        0
+      ],
+      "id": "f7e5a707-9447-47be-b4d9-6c1191a9af4b",
+      "name": "Assistante Lyra fichiers",
+      "credentials": {
+        "openAiApi": {
+          "id": "pfKjlJVuaInfVQmJ",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "return items.map(item => {\n  const texteNettoye = item.json.output.replace(/【[^【】]*?†[^【】]*?】/g, '');\n  return {\n    json: {\n      ...item.json,\n      output: texteNettoye\n    }\n  };\n});\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        768,
+        0
+      ],
+      "id": "26de9d43-7e54-4de0-af99-17d84aeb099d",
+      "name": "Regex en JS"
+    },
+    {
+      "parameters": {
+        "sendTo": "jerome.frasson84@gmail.com",
+        "subject": "Réponse suite à votre message",
+        "emailType": "text",
+        "message": "={{ $json.output }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        976,
+        0
+      ],
+      "id": "db970a96-9522-42da-b622-4852332d70ca",
+      "name": "envoi d'une réponse",
+      "webhookId": "08f9c20a-498d-4e5e-ac88-de0fc8a86ff4",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "De0NYq9KnxNHkOE8",
+          "name": "Gmail account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "récupère message entrant dans un Sheet ",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "récupère message entrant dans un Sheet ": {
+      "main": [
+        [
+          {
+            "node": "Assistante Lyra fichiers",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Assistante Lyra fichiers": {
+      "main": [
+        [
+          {
+            "node": "Regex en JS",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Regex en JS": {
+      "main": [
+        [
+          {
+            "node": "envoi d'une réponse",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "528b3644-03cc-45f7-a1fa-61cc18bca531",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "7f06125026a9b558f57ce462e33a4980734204a6d150181a74eeca2e3901bc35"
+  },
+  "id": "YiP16EnKfl8Zmpot",
+  "tags": []
+}
