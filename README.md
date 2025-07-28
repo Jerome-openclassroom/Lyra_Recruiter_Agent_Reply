@@ -9,12 +9,37 @@ The system leverages a GPT assistant enriched with context files (GitHub README 
 
 The pipeline is built with the following logical steps in n8n:
 
-1. 📥 Automatic reading of an incoming message via Google Sheets  
+1. 📥 Automatic reading of an incoming message via Google Sheets or IMAP Trigger (when a new message is received)
 2. 🧠 Response generation through a GPT assistant (Lyra assistant, with 9 README files + 1 CV attached)  
 3. 🧹 Cleaning of citation tags using JavaScript (`【...†...】`)  
 4. 📤 Sending the formatted reply via Gmail
 
 ---
+
+## 🔄 Extension: Two-Round Email Conversation Test with a Recruiter
+
+This project was extended to validate the assistant’s ability to handle a realistic two-turn email conversation, simulating a recruiter interaction.
+
+### 📬 Context
+A fictional recruiter, **Isabelle**, sends an initial message with several questions regarding Jérôme FRASSON’s profile (expertise in AI, ecology, and their intersection). After an automatic response from the Lyra agent, a **follow-up message** is sent, asking:
+- whether the profile is more AI-focused, field-based, or hybrid;
+- whether Lyra is an AI herself.
+
+### 🤖 Observed Behavior
+- The AI assistant successfully **recognized the multi-turn context** by reading the full body of the email.
+- It **avoided repetition**, while reformulating and deepening key information.
+- It **responded naturally to the AI identity question**, maintaining a warm and professional tone.
+
+### 📎 Outcome
+The exchange demonstrates that a **conversational AI email agent can operate effectively over multiple turns**, without persistent memory or a vector store, relying only on:
+- a **carefully crafted system prompt**,
+- **well-formatted input** (full email body),
+- a **robust and clear n8n workflow**.
+
+📄 See the full simulated exchange in the file: [`échange IA humain.docx`](./screenshots/échange%20IA%20humain.docx)
+
+---
+
 
 ## 🧾 Goals
 
@@ -49,6 +74,8 @@ Lyra_Recruiter_Agent/
 - **JavaScript**: lightweight inline processing (regex cleanup)
 
 ---
+
+
 
 ## 🔗 Related Links
 
