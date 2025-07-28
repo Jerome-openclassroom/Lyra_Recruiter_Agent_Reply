@@ -1,50 +1,6 @@
 {
-  "name": "workflow révision 2",
+  "name": "workflow révision 3",
   "nodes": [
-    {
-      "parameters": {},
-      "type": "n8n-nodes-base.manualTrigger",
-      "typeVersion": 1,
-      "position": [
-        0,
-        0
-      ],
-      "id": "923bac7b-7a72-4c28-92ad-f5f5628ca216",
-      "name": "When clicking ‘Execute workflow’"
-    },
-    {
-      "parameters": {
-        "documentId": {
-          "__rl": true,
-          "value": "1Y-CtmvpahbuhZW9-_mxoeM7V1iSa4r4Dytqv57wQX78",
-          "mode": "list",
-          "cachedResultName": "message entrant",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Y-CtmvpahbuhZW9-_mxoeM7V1iSa4r4Dytqv57wQX78/edit?usp=drivesdk"
-        },
-        "sheetName": {
-          "__rl": true,
-          "value": "gid=0",
-          "mode": "list",
-          "cachedResultName": "Feuille 1",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Y-CtmvpahbuhZW9-_mxoeM7V1iSa4r4Dytqv57wQX78/edit#gid=0"
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.googleSheets",
-      "typeVersion": 4.6,
-      "position": [
-        208,
-        0
-      ],
-      "id": "39f7eb76-62ea-4fde-af18-383ae88404db",
-      "name": "récupère message entrant dans un Sheet ",
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "vGp9szxQUXvYy8ix",
-          "name": "Google Sheets account"
-        }
-      }
-    },
     {
       "parameters": {
         "resource": "assistant",
@@ -55,16 +11,16 @@
           "cachedResultName": "Lyra_candidatures"
         },
         "prompt": "define",
-        "text": "={{ $json.Message }}",
+        "text": "={{ $json.message }}",
         "options": {}
       },
       "type": "@n8n/n8n-nodes-langchain.openAi",
       "typeVersion": 1.8,
       "position": [
-        416,
+        432,
         0
       ],
-      "id": "f7e5a707-9447-47be-b4d9-6c1191a9af4b",
+      "id": "acf4e3f1-db4d-491b-a49f-7cb0d8332b6b",
       "name": "Assistante Lyra fichiers",
       "credentials": {
         "openAiApi": {
@@ -72,19 +28,6 @@
           "name": "OpenAi account"
         }
       }
-    },
-    {
-      "parameters": {
-        "jsCode": "return items.map(item => {\n  const texteNettoye = item.json.output.replace(/【[^【】]*?†[^【】]*?】/g, '');\n  return {\n    json: {\n      ...item.json,\n      output: texteNettoye\n    }\n  };\n});\n"
-      },
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [
-        768,
-        0
-      ],
-      "id": "26de9d43-7e54-4de0-af99-17d84aeb099d",
-      "name": "Regex en JS"
     },
     {
       "parameters": {
@@ -100,31 +43,127 @@
         976,
         0
       ],
-      "id": "db970a96-9522-42da-b622-4852332d70ca",
+      "id": "6aeee23f-a8f2-4c6f-a9fe-e9423a92ce94",
       "name": "envoi d'une réponse",
-      "webhookId": "08f9c20a-498d-4e5e-ac88-de0fc8a86ff4",
+      "webhookId": "1f1c5d7e-536f-4edc-9d67-23019660d496",
       "credentials": {
         "gmailOAuth2": {
           "id": "De0NYq9KnxNHkOE8",
           "name": "Gmail account"
         }
       }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.emailReadImap",
+      "typeVersion": 2.1,
+      "position": [
+        -80,
+        0
+      ],
+      "id": "4490d0e7-59dd-4d97-aee9-64af8c4505e1",
+      "name": "Email Trigger (IMAP)",
+      "credentials": {
+        "imap": {
+          "id": "5DJSK6ILQppoDnNi",
+          "name": "IMAP account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "93aba252-bfe5-44fc-b21e-dc3c50705654",
+              "name": "=",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "03419abb-6935-4178-86b5-11660b0d8efe",
+              "name": "textPlain",
+              "value": "={{ $json.textPlain }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        80,
+        0
+      ],
+      "id": "91286766-e1b2-4426-87eb-2e06408d8fbb",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "jsCode": "const raw = $json[\"textPlain\"] || \"\";\n\n// Fonction de correction UTF-8 mal interprété\nfunction fixEncoding(str) {\n  const buffer = Buffer.from(str, 'binary'); // force l’interprétation binaire brute\n  return buffer.toString('utf8');            // puis décode correctement en UTF-8\n}\n\n// Nettoyage final (sauts de ligne + espaces)\nconst cleaned = fixEncoding(raw)\n  .replace(/\\r?\\n/g, ' ')      // retire les sauts de ligne\n  .replace(/\\s{2,}/g, ' ')     // retire les doubles espaces\n  .trim();\n\nreturn [{\n  json: {\n    message: cleaned\n  }\n}];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        256,
+        0
+      ],
+      "id": "ea874edf-0781-44b9-b74a-84d57003837d",
+      "name": "Regex en JS N°1"
+    },
+    {
+      "parameters": {
+        "jsCode": "return items.map(item => {\n  const texteNettoye = item.json.output.replace(/【[^【】]*?†[^【】]*?】/g, '');\n  return {\n    json: {\n      ...item.json,\n      output: texteNettoye\n    }\n  };\n});\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        784,
+        0
+      ],
+      "id": "848fc8c8-76cd-4c91-9978-933fda9af7c3",
+      "name": "Regex en JS N°2"
     }
   ],
   "pinData": {},
   "connections": {
-    "When clicking ‘Execute workflow’": {
+    "Assistante Lyra fichiers": {
       "main": [
         [
           {
-            "node": "récupère message entrant dans un Sheet ",
+            "node": "Regex en JS N°2",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "récupère message entrant dans un Sheet ": {
+    "Email Trigger (IMAP)": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Regex en JS N°1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Regex en JS N°1": {
       "main": [
         [
           {
@@ -135,18 +174,7 @@
         ]
       ]
     },
-    "Assistante Lyra fichiers": {
-      "main": [
-        [
-          {
-            "node": "Regex en JS",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Regex en JS": {
+    "Regex en JS N°2": {
       "main": [
         [
           {
@@ -162,11 +190,11 @@
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "528b3644-03cc-45f7-a1fa-61cc18bca531",
+  "versionId": "f73d3bcf-d048-409c-bbf2-3c951021e25d",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "7f06125026a9b558f57ce462e33a4980734204a6d150181a74eeca2e3901bc35"
   },
-  "id": "YiP16EnKfl8Zmpot",
+  "id": "XA2ZTwSIQ9b1xhRM",
   "tags": []
 }
