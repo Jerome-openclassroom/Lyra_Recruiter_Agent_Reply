@@ -73,9 +73,9 @@ The exchange demonstrates that a **conversational AI email agent can operate eff
 Lyra_Recruiter_Agent/
 ├── README.md
 ├── screenshots/
-│   ├── sent_message.jpg         # Simulated recruiter message
-│   ├── answer_message.jpg       # AI-generated response from Lyra
-│   └── workflow.jpg             # Screenshot of the n8n workflow
+│   ├── sent_message.png         # Simulated recruiter message
+│   ├── answer_message.png       # AI-generated response from Lyra
+│   └── workflow.png             # Screenshot of the n8n workflow
 ├── code/
 │   ├── parser_1.md              # JavaScript code for email body cleaning (UTF-8 + line breaks)
 │   ├── parser_2.md              # JavaScript code to remove 【†】 citations
