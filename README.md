@@ -76,10 +76,12 @@ Lyra_Recruiter_Agent/
 │   ├── sent_message.jpg         # Simulated recruiter message
 │   ├── answer_message.jpg       # AI-generated response from Lyra
 │   └── workflow.jpg             # Screenshot of the n8n workflow
-└── code/
-    ├── parser.md                # JavaScript code to remove 【†】 citations
-    └── workflow.json            # Structural export of the n8n workflow
-```
+├── code/
+│   ├── parser_1.md              # JavaScript code for email body cleaning (UTF-8 + line breaks)
+│   ├── parser_2.md              # JavaScript code to remove 【†】 citations
+│   └── workflow.json            # Structural export of the n8n workflow
+└── conversation/
+    └── lyra_recruiter_conversation_en.md  # Transcribed and translated two-round conversation
 
 ---
 
