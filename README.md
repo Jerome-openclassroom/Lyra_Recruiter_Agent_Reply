@@ -53,7 +53,8 @@ The exchange demonstrates that a **conversational AI email agent can operate eff
 - **well-formatted input** (full email body),
 - a **robust and clear n8n workflow**.
 
-📄 See the full simulated exchange in the file: [`échange IA humain.docx`](./screenshots/échange%20IA%20humain.docx)
+📄 See the full simulated exchange in the file: [`lyra_recruiter_conversation_en.md`](./conversation/lyra_recruiter_conversation_en.md)
+
 
 ---
 
