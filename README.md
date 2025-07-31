@@ -102,6 +102,8 @@ Lyra_Recruiter_Agent/
 - [GitHub – Jérôme FRASSON](https://github.com/Jerome-openclassroom) — AI & ecology-related projects
 - [n8n.io](https://n8n.io) — tool used to build the workflow
 
+**See also the Make.com version of this project:** [Lyra_Recruiter_Agent_Make](https://github.com/Jerome-openclassroom/Lyra_Recruiter_Agent_Make)
+
 ---
 
 ---
