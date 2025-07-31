@@ -1,4 +1,4 @@
-# Lyra_Recruiter_Agent
+# Lyra_Recruiter_Agent_n8n
 
 This repository showcases a fully operational AI agent built with n8n, designed to automatically respond to recruiter messages using the profile data of Jérôme FRASSON.  
 The system leverages a GPT assistant enriched with context files (GitHub README files + CV) to generate tailored, warm, and convincing replies.
