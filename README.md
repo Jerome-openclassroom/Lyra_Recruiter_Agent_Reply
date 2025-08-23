@@ -74,7 +74,8 @@ The exchange demonstrates that a **conversational AI email agent can operate eff
 
 ```
 Lyra_Recruiter_Agent/
-├── README.md
+├── README.md                    # english version
+├── README_fr.md                 # french version
 ├── screenshots/
 │   ├── sent_message.png         # Simulated recruiter message
 │   ├── answer_message.png       # AI-generated response from Lyra
