@@ -73,7 +73,8 @@ L’échange démontre qu’un **agent conversationnel email peut fonctionner ef
 
 ```
 Lyra_Recruiter_Agent/
-├── README.md
+├── README.md                    # Version en anglais
+├── README_fr.md                 # Version en français
 ├── screenshots/
 │   ├── sent_message.png         # Message simulé du recruteur
 │   ├── answer_message.png       # Réponse générée par Lyra
